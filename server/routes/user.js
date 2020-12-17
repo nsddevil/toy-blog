@@ -55,11 +55,10 @@ router.post('/signin', isNotLogged, (req, res, next) => {
     });
   }
   passport.authenticate('local', { session: false }, (err, user, info) => {
-    if (err) return next(error);
+    if (err) return next(err);
     if (!user) {
       return res.status(400).json({
-        success: false,
-        message: info.message,
+        error: info.message,
       });
     }
     req.login(user, { session: false }, (err) => {
