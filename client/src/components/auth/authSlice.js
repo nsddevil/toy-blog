@@ -42,15 +42,16 @@ const authSlice = createSlice({
     },
   },
 });
-export const {
+const {
   signupFailure,
   signupStart,
   signupSuccess,
   signinFailure,
   signinStart,
-  signinSuccess,
   logoutSuccess,
 } = authSlice.actions;
+
+export const { signinSuccess } = authSlice.actions;
 
 export const signup = (form) => async (dispatch) => {
   try {

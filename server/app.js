@@ -6,6 +6,7 @@ const passport = require('passport');
 const { verifyToken } = require('./middleware');
 const passportConfig = require('./passport');
 const routes = require('./routes');
+const path = require('path');
 const app = express();
 const { PORT } = process.env;
 
@@ -18,6 +19,8 @@ app.use(passport.initialize());
 passportConfig();
 
 app.use(verifyToken);
+
+app.use('/image', express.static(path.join(__dirname, 'uploads')));
 app.use('/api', routes);
 
 app.use((req, res, next) => {

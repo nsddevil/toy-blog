@@ -5,6 +5,8 @@ import SignupPage from './components/auth/SignupPage';
 import HeaderPage from './components/header/HeaderPage';
 import Landing from './components/landing/Landing';
 import HocAuth from './components/hoc/HocAuth';
+import WritePage from './components/write/WritePage';
+import DetailPage from './components/detail/DetailPage';
 
 function App() {
   return (
@@ -18,6 +20,11 @@ function App() {
         />
         <Route path="/signin" component={HocAuth(SigninPage, false)} />
         <Route path="/signup" component={HocAuth(SignupPage, false)} />
+        <Route path="/write" component={HocAuth(WritePage, true)} />
+        <Route
+          path="/@:nickname/:postId"
+          component={HocAuth(DetailPage, null)}
+        />
       </Switch>
     </BrowserRouter>
   );
