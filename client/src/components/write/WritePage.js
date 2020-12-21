@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import Write from './Write';
 import { useDispatch, useSelector } from 'react-redux';
 import { uploadImg, deleteImg, addPost, resetImgs } from './writeSlice';
+import { resetPosts } from '../postlist/postSlice';
 import { useHistory } from 'react-router-dom';
 
 function WritePage() {
@@ -9,6 +10,7 @@ function WritePage() {
   const history = useHistory();
   const { imgs } = useSelector((state) => state.write);
   const { user } = useSelector((state) => state.auth);
+
   const onUploadImg = (form) => {
     dispatch(uploadImg(form));
   };
@@ -18,8 +20,9 @@ function WritePage() {
 
   const onAddPost = (form) => {
     dispatch(addPost(form)).then((res) => {
-      if (res && res.postId) {
-        history.push(`/@${user.nickname}/${res.postId}`);
+      if (res && res.post) {
+        dispatch(resetPosts());
+        history.push(`/@${user.nickname}/${res.post._id}`);
       }
     });
   };

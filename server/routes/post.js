@@ -16,19 +16,65 @@ router.post('/', isLogged, async (req, res, next) => {
     });
   }
 
+  let hashtags = body.match(/#[^\s#]+/g);
+  if (hashtags) {
+    hashtags = hashtags.map((t) => t.split('#')[1]);
+  }
   try {
-    const newPost = new Post({
+    const post = new Post({
       body: body.replace(/#[^\s#]+/g, '').trim(),
       imgs,
       author: {
         _id: req.user._id,
         nickname: req.user.nickname,
       },
-      tags: body.match(/#[^\s#]+/g) || [],
+      tags: hashtags || [],
     });
-    await newPost.save();
+    await post.save();
     res.status(200).json({
-      postId: newPost._id,
+      post,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/', async (req, res, next) => {
+  const page = parseInt(req.query.page || '1', 10);
+  const { nickname, tag } = req.query;
+  const query = {
+    ...(nickname ? { 'author.nickname': nickname } : {}),
+    ...(tag ? { tags: tag } : {}),
+  };
+
+  try {
+    const posts = await Post.find(query)
+      .sort({ _id: -1 })
+      .limit(10)
+      .skip((page - 1) * 10)
+      .exec();
+
+    const postCount = await Post.countDocuments(query).exec();
+    res.status(200).json({
+      posts,
+      lastPage: Math.ceil(postCount / 10),
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/:postId', async (req, res, next) => {
+  const { postId } = req.params;
+  try {
+    const post = await Post.findOne({ _id: postId }).exec();
+    if (!post) {
+      return res.status(404).json({
+        error: '포스트가 없습니다.',
+      });
+    }
+    res.status(200).json({
+      post,
     });
   } catch (error) {
     next(error);
