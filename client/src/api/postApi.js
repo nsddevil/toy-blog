@@ -20,3 +20,7 @@ export const getPostApi = (postId) => {
 export const getPostsApi = (query) => {
   return client.get(`/api/post?${qs.stringify(query)}`);
 };
+
+export const deletePostApi = (postId) => {
+  return client.delete(`/api/post/${postId}`);
+};

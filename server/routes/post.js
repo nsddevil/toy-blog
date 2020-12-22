@@ -81,4 +81,20 @@ router.get('/:postId', async (req, res, next) => {
   }
 });
 
+router.delete('/:postId', isLogged, async (req, res, next) => {
+  const { postId } = req.params;
+  try {
+    const post = await Post.findOne({ _id: postId }).exec();
+    if (!post) {
+      return res.status(404).json({
+        error: '포스트가 없습니다.',
+      });
+    }
+    await post.delete();
+    res.sendStatus(204);
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;

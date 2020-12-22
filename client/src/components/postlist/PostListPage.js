@@ -5,9 +5,7 @@ import { getPostsAll } from './postSlice';
 
 function PostListPage() {
   const dispatch = useDispatch();
-  const { posts, lastPage, currentPage } = useSelector(
-    (state) => state.postList
-  );
+  const { posts, lastPage, currentPage } = useSelector((state) => state.postList);
 
   useEffect(() => {
     if (currentPage === 0) {
@@ -15,18 +13,12 @@ function PostListPage() {
     } else {
       const infiniteScroll = () => {
         const { documentElement, body } = document;
-        const scrollHeight = Math.max(
-          documentElement.scrollHeight,
-          body.scrollHeight
-        );
+        const scrollHeight = Math.max(documentElement.scrollHeight, body.scrollHeight);
         const scrollTop = Math.max(documentElement.scrollTop, body.scrollTop);
         const clientHeight = documentElement.clientHeight;
 
-        if (
-          scrollTop + clientHeight >= scrollHeight &&
-          lastPage !== currentPage
-        ) {
-          dispatch(getPostsAll({ page: currentPage + 1 }));
+        if (scrollTop + clientHeight >= scrollHeight && lastPage !== currentPage) {
+          dispatch(getPostsAll({ page: currentPage + 1 }, true));
         }
       };
       window.addEventListener('scroll', infiniteScroll);

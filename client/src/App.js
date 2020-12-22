@@ -20,15 +20,8 @@ function App() {
         <Route path="/signup" component={HocAuth(SignupPage, false)} />
         <Route path="/write" component={HocAuth(WritePage, true)} />
         <Route path="/tag/:tagName" component={HocAuth(TagPostPage, null)} />
-        <Route
-          exact
-          path="/@:nickname"
-          component={HocAuth(UserPostPage, null)}
-        />
-        <Route
-          path="/@:nickname/:postId"
-          component={HocAuth(DetailPage, null)}
-        />
+        <Route exact path="/@:nickname" component={HocAuth(UserPostPage, null)} />
+        <Route path="/@:nickname/:postId" component={HocAuth(DetailPage, null)} />
       </Switch>
     </BrowserRouter>
   );

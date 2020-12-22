@@ -5,6 +5,7 @@ import detail from '../components/detail/detailSlice';
 import postList from '../components/postlist/postSlice';
 import tagPost from '../components/postlist/tagPostSlice';
 import userPost from '../components/postlist/userPostSlice';
+import commentList from '../components/comment/commentSlice';
 
 const rootReducer = combineReducers({
   auth,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   postList,
   tagPost,
   userPost,
+  commentList,
 });
 
 const store = configureStore({

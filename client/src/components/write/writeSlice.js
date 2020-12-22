@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { uploadImgApi, addPostApi, deleteImgApi } from '../../api/postApi';
+import { uploadImgApi, deleteImgApi } from '../../api/postApi';
 
 const initialState = {
   isLoading: false,
@@ -23,19 +23,6 @@ const writeSlice = createSlice({
     uploadImgFailure: (state, action) => {
       const { error } = action.payload;
       state.isLoading = false;
-      state.error = error;
-    },
-
-    addPostStart: (state, action) => {
-      state.isLoading = true;
-    },
-    addPostSuccess: (state, action) => {
-      state.isLoading = false;
-      state.error = null;
-    },
-    addPostFailure: (state, action) => {
-      const { error } = action.payload;
-      state.isLoading = true;
       state.error = error;
     },
     deleteImgStart: (state, action) => {
@@ -63,9 +50,6 @@ const {
   uploadImgFailure,
   uploadImgStart,
   uploadImgSuccess,
-  addPostFailure,
-  addPostStart,
-  addPostSuccess,
   deleteImgFailure,
   deleteImgStart,
   deleteImgSuccess,
@@ -80,17 +64,6 @@ export const uploadImg = (form) => async (dispatch) => {
     dispatch(uploadImgSuccess(res.data));
   } catch (error) {
     dispatch(uploadImgFailure(error.response.data));
-  }
-};
-
-export const addPost = (form) => async (dispatch) => {
-  try {
-    dispatch(addPostStart());
-    const res = await addPostApi(form);
-    dispatch(addPostSuccess(res.data));
-    return res.data;
-  } catch (error) {
-    dispatch(addPostFailure(error.response.data));
   }
 };
 

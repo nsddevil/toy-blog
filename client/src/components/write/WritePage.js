@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react';
 import Write from './Write';
 import { useDispatch, useSelector } from 'react-redux';
-import { uploadImg, deleteImg, addPost, resetImgs } from './writeSlice';
-import { resetPosts } from '../postlist/postSlice';
+import { uploadImg, deleteImg, resetImgs } from './writeSlice';
+import { addPost, resetPosts } from '../postlist/postSlice';
+import { resetPosts as userResetPost } from '../postlist/userPostSlice';
+import { resetPosts as tagResetPost } from '../postlist/tagPostSlice';
 import { useHistory } from 'react-router-dom';
 
 function WritePage() {
   const dispatch = useDispatch();
   const history = useHistory();
   const { imgs } = useSelector((state) => state.write);
-  const { user } = useSelector((state) => state.auth);
 
   const onUploadImg = (form) => {
     dispatch(uploadImg(form));
@@ -20,9 +21,11 @@ function WritePage() {
 
   const onAddPost = (form) => {
     dispatch(addPost(form)).then((res) => {
+      dispatch(resetPosts());
+      dispatch(userResetPost());
+      dispatch(tagResetPost());
       if (res && res.post) {
-        dispatch(resetPosts());
-        history.push(`/@${user.nickname}/${res.post._id}`);
+        history.push(`/@${res.post.author.nickname}`);
       }
     });
   };
@@ -33,14 +36,7 @@ function WritePage() {
     };
   }, [dispatch]);
 
-  return (
-    <Write
-      onUploadImg={onUploadImg}
-      onDeleteImg={onDeleteImg}
-      onAddPost={onAddPost}
-      imgs={imgs}
-    />
-  );
+  return <Write onUploadImg={onUploadImg} onDeleteImg={onDeleteImg} onAddPost={onAddPost} imgs={imgs} />;
 }
 
 export default WritePage;

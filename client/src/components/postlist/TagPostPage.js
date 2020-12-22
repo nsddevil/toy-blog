@@ -7,28 +7,20 @@ import { useParams } from 'react-router-dom';
 function TagPostPage() {
   const dispatch = useDispatch();
   const { tagName } = useParams();
-  const { posts, lastPage, currentPage, prevTag } = useSelector(
-    (state) => state.tagPost
-  );
+  const { posts, lastPage, currentPage, prevTag } = useSelector((state) => state.tagPost);
 
   useEffect(() => {
     if (prevTag !== tagName) {
-      dispatch(getPostsAll({ tag: tagName }, true));
+      dispatch(getPostsAll({ tag: tagName }));
     } else {
       const infiniteScroll = () => {
         const { documentElement, body } = document;
-        const scrollHeight = Math.max(
-          documentElement.scrollHeight,
-          body.scrollHeight
-        );
+        const scrollHeight = Math.max(documentElement.scrollHeight, body.scrollHeight);
         const scrollTop = Math.max(documentElement.scrollTop, body.scrollTop);
         const clientHeight = documentElement.clientHeight;
 
-        if (
-          scrollTop + clientHeight >= scrollHeight &&
-          lastPage !== currentPage
-        ) {
-          dispatch(getPostsAll({ tag: tagName, page: currentPage + 1 }));
+        if (scrollTop + clientHeight >= scrollHeight && lastPage !== currentPage) {
+          dispatch(getPostsAll({ tag: tagName, page: currentPage + 1 }, true));
         }
       };
       window.addEventListener('scroll', infiniteScroll);
