@@ -90,6 +90,11 @@ router.delete('/:postId', isLogged, async (req, res, next) => {
         error: '포스트가 없습니다.',
       });
     }
+    if (post.author._id.toString() !== req.user._id) {
+      return res.status(403).json({
+        error: '삭제권한이 없습니다.',
+      });
+    }
     await post.delete();
     res.sendStatus(204);
   } catch (error) {

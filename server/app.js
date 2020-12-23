@@ -20,6 +20,7 @@ passportConfig();
 
 app.use(verifyToken);
 
+app.use(express.static(path.join(__dirname, 'build')));
 app.use('/image', express.static(path.join(__dirname, 'uploads')));
 app.use('/api', routes);
 
@@ -34,5 +35,10 @@ app.use((error, req, res, next) => {
     error: error.message,
   });
 });
+
+// app.use('*', (req, res) => {
+//   const basePath = path.join(__dirname, 'build', 'index.html');
+//   res.sendFile(basePath);
+// });
 
 app.listen(PORT, () => console.log(`server start PORT: ${PORT}`));

@@ -37,17 +37,17 @@ function Slide({ imgs }) {
           </span>
         )}
       </div>
-      <div className="flex mt-2 justify-center cursor-pointer">
+      <div className="flex mt-2 justify-center">
         {imgs.map((v, i) => (
-          <div
+          <span
             key={i}
             className={
               currentIndex === i
-                ? 'w-4 h-4 mx-1 bg-black rounded-full'
-                : 'w-4 h-4 mx-1 bg-gray-400 rounded-full'
+                ? 'w-4 h-4 mx-1 bg-black rounded-full  cursor-pointer'
+                : 'w-4 h-4 mx-1 bg-gray-400 rounded-full cursor-pointer'
             }
             onClick={() => moveTo(i)}
-          ></div>
+          ></span>
         ))}
       </div>
     </div>
